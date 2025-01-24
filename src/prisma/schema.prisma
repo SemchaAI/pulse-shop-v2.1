@@ -1,0 +1,351 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+//
+enum OrderStatus {
+  PENDING
+  SUCCEEDED
+  CANCELLED
+}
+
+enum Role {
+  USER
+  ADMIN
+  GUEST
+}
+
+//not realized
+enum SpecialTypes {
+  NEW
+  SALE
+}
+
+//
+model User {
+  id Int @id @default(autoincrement())
+
+  name     String @unique
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  avatar    String?
+  firstName String?
+  lastName  String?
+  phone     String?
+
+  provider   String?
+  providerId String?
+
+  verified DateTime?
+
+  // tokenRef Token  @relation(fields: [token], references: [token])
+  // token String @unique
+
+  cart             Cart?
+  favorite         Favorite?
+  rating           Rating[]
+  order            Order[]
+  verificationCode VerificationCode?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Token {
+//   token String @id @unique
+
+//   user     User?
+//   cart     Cart?
+//   favorite Favorite?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+model Cart {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  // // token String?
+  // tokenRef Token  @relation(fields: [token], references: [token])
+  // token    String @unique
+
+  cartProduct CartProduct[]
+
+  totalAmount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartProduct {
+  id Int @id @default(autoincrement())
+
+  quantity Int @default(1)
+
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int
+
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Favorite {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  // token String?
+  // tokenRef Token  @relation(fields: [token], references: [token])
+  // token    String @unique
+
+  favoriteProduct FavoriteProduct[]
+
+  // totalAmount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FavoriteProduct {
+  id Int @id @default(autoincrement())
+
+  // quantity Int @default(1)
+
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int
+
+  Favorite   Favorite @relation(fields: [favoriteId], references: [id])
+  favoriteId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  totalRating Float  @default(0)
+  description String
+
+  colors Color[]
+  ram    Ram[]
+  memory Memory[]
+
+  // memory   Memory? @relation(fields: [memoryId], references: [id])
+  // memoryId Int?
+
+  // ram   Ram? @relation(fields: [ramId], references: [id])
+  // ramId Int?
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  productItem ProductItem[]
+  // CartProduct   CartProduct[]
+  productInfo ProductInfo[]
+  rating      Rating[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Special {
+//   id Int @id @default(autoincrement())
+
+//   type SpecialTypes
+//   sale Int?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+model ProductItem {
+  id Int @id @default(autoincrement())
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  title    String @unique
+  img      String
+  price    Int
+  oldPrice Int?
+  cnt      Int
+
+  cartProduct     CartProduct[]
+  FavoriteProduct FavoriteProduct[]
+  productImages   ProductImages?
+
+  color   Color? @relation(fields: [colorId], references: [id])
+  colorId Int?
+
+  memory   Memory? @relation(fields: [memoryId], references: [id])
+  memoryId Int?
+
+  ram   Ram? @relation(fields: [ramId], references: [id])
+  ramId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([title, colorId, memoryId, ramId])
+}
+
+model ProductInfo {
+  id Int @id @default(autoincrement())
+
+  title       String
+  description String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([title, description, productId])
+}
+
+model ProductImages {
+  id Int @id @default(autoincrement())
+
+  thumbnails String[]
+
+  product       ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int         @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Color {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  productItem ProductItem[]
+  products    Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Memory {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  productItem ProductItem[]
+  products    Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ram {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  productItem ProductItem[]
+  products    Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Rating {
+  id Int @id @default(autoincrement())
+
+  message String
+  rate    Int
+  name    String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  // token String
+
+  totalAmount Int
+  status      OrderStatus @default(PENDING)
+  paymentId   String?
+
+  items Json
+
+  name    String
+  address String
+  email   String
+  phone   String
+  comment String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationCode {
+  id Int @id @default(autoincrement())
+
+  code String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code])
+}
+
+model BannerSlide {
+  id      Int    @id @default(autoincrement())
+  desktop String
+  tablet  String
+  mobile  String
+
+  base64 String
+
+  alt String
+
+  width  Int
+  height Int
+
+  priority Boolean
+  href     String
+}
