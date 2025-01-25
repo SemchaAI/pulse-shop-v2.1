@@ -4,11 +4,10 @@ import { getAccessToken } from './getAccessToken';
 type FetchOptions = RequestInit & { retry?: boolean }; // Add a custom "retry" flag
 
 export async function customFetch(url: string, options: FetchOptions = {}) {
-  // Request Interceptor Logic
-  const token = await getAccessToken(); // Get the access token from cookies or storage
+  const token = await getAccessToken();
   const headers = {
     ...options.headers,
-    Authorization: `Bearer ${token}`, // Add Authorization header
+    Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
   };
 
@@ -16,18 +15,21 @@ export async function customFetch(url: string, options: FetchOptions = {}) {
     const response = await fetch(url, { ...options, headers });
     // Response Interceptor Logic
     if (response.status === 401 && options.retry !== false) {
-      // Handle token expiration or unauthorized requests
-      const data = await fetch(API_ROUTES.REFRESH); // Refresh the access token
-      if (!data.ok) return;
-      const newToken = await data.json();
-
-      if (newToken) {
+      //
+      const data = await fetch(API_ROUTES.REFRESH); //
+      const { accessToken } = await data.json();
+      if (accessToken) {
         // Retry the original request with the new token
         return await customFetch(url, {
           ...options,
-          headers: { ...headers, Authorization: `Bearer ${newToken}` },
+          headers: {
+            ...headers,
+            Authorization: `Bearer ${accessToken}`,
+          },
           retry: false, // Prevent infinite retries
         });
+      } else {
+        throw new Error('Failed to refresh token');
       }
     }
 
@@ -39,7 +41,8 @@ export async function customFetch(url: string, options: FetchOptions = {}) {
 
     return response;
   } catch (error) {
-    console.error('Fetch error:', error);
+    const msg = error instanceof Error ? error.message : 'Something went wrong';
+    console.log('CUSTOM FETCH', msg);
     throw error;
   }
 }
