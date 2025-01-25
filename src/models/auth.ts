@@ -9,6 +9,7 @@ export interface IUserSession {
   name: string;
   avatar: string | null;
   email: string;
+  exp: number;
 }
 export interface IUserResponse {
   user: IUserSession | null;
