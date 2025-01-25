@@ -7,6 +7,14 @@ import { JWT_ACCESS } from '../consts/env';
 import type { IUserResponse, IUserSession } from '@/models/auth';
 
 export async function getServerSession(): Promise<IUserResponse> {
+  if (!JWT_ACCESS) {
+    return {
+      user: null,
+      message: 'Server configuration error',
+      status: 500,
+    };
+  }
+
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get('refreshToken');
   if (!refreshToken) {
@@ -22,13 +30,6 @@ export async function getServerSession(): Promise<IUserResponse> {
       user: null,
       message: 'Unauthorized missing token',
       status: 401,
-    };
-  }
-  if (!JWT_ACCESS) {
-    return {
-      user: null,
-      message: 'Server configuration error',
-      status: 500,
     };
   }
 
