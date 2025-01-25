@@ -48,7 +48,3 @@ export const validateRefreshToken = async (token: string) => {
     return null;
   }
 };
-
-// export async function saveToken(userId:number, refreshToken: string) {
-
-// }
