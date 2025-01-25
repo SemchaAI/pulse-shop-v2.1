@@ -3,19 +3,165 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background Colors */
+  --background: #ffffff;        
+  /* Foreground Colors */
+  --foreground: #F3F5F7;         
+
+  /* action */
+  --action-disabled: rgba(145, 158, 171, 0.3);
+  --action-disabled-bg: rgba(145, 158, 171, 0.3);
+
+  /* Primary Colors */
+  --primary: #FFC831;            /* Primary accent */
+  --primary-action: #ffbb00;
+
+  /* Secondary Colors */
+  --secondary: #919EAB;          /* Secondary accent */
+  --secondary-action: #637381;
+
+  /* text colors */
+  --gray-100: #F3F5F7;
+  --gray-300: #DFE3E8;
+  --gray-400: #C4CDD5;
+  --gray-500: #919EAB;
+  --gray-600: #637381;
+  --gray-800: #2D3748;
+
+  --black:#000000;
+  --black-01:#15141B;
+  --black-02:#191922;
+  --white:#ffffff;
+  
+  /* Feedback Colors */
+  --error: #EA4335;              /* Error messages */
+  --warning: #F2994A;            /* Warnings */
+  --success: #34A853;            /* Success messages */
+
+  /* Borders and Shadows */
+  --border: var(--gray-300);             /* Default border */
+
+  /* Text Colors */
+  --text-primary: var(--gray-600);         /* Main text */
+  --text-tertiary: var(--primary);        /* Tertiary text */
+  --text-highlight: var(--gray-800);       /* Highlighted or link text */
+
+
+  --text-error: var(--error);                /* Error text */
+  --text-warning: var(--warning);            /* Warning text */
+  --text-success: var(--success);            /* Success text */
+
+ /* Gradients */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html[data-mode="dark"]{
+  /* Background Colors */
+  --background: #15141B;        
+  /* Foreground Colors */
+  --foreground: #191922;     
+
+  /* action */
+  --action-disabled: #15141ba9;
+  --action-disabled-bg: #15141ba9;
+
+  /* Text Colors */
+  --text-primary: var(--gray-400);         /* Main text */
+  --text-tertiary: var(--primary);        /* Tertiary text */
+  --text-highlight: var(--white);       /* Highlighted or link text */
+
+
+  --text-error: var(--error);                /* Error text */
+  --text-warning: var(--warning);            /* Warning text */
+  --text-success: var(--success);            /* Success text */
+
+  /* Borders and Shadows */
+  --border: var(--gray-800);             /* Default border */
+}
+
+
+.typo-title-24 {
+  @apply text-2xl font-bold leading-6 tracking-wide ;
+}
+.typo-title-30 {
+  @apply text-3xl font-bold leading-8 tracking-normal;
+}
+
+.typo-body-12 {
+  @apply text-xs font-normal tracking-normal;
+}
+.typo-body-14 {
+  @apply text-sm font-normal tracking-normal;
+}
+.typo-body-16 {
+  @apply text-base font-normal tracking-wide;
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+ul,
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
 body {
-  color: var(--foreground);
+  /* min-height: 100dvh;
+  display: flex;
+  flex-direction: column; */
+
+  color: var(--text-primary);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: color 0.5s, background-color 0.5s;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+
+  cursor: pointer;
+}
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    caret-color: transparent;
+    -webkit-box-shadow: 0 0 0 1000px var(--foreground)  inset;
+    -webkit-text-fill-color: var(--text-primary);
+  }
 }
