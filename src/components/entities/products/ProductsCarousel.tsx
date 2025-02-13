@@ -8,10 +8,10 @@ import {
   usePrevNextButtons,
 } from '@/components/features';
 
-import type { IProductVariant } from '@/models/prisma';
+import type { ISearchProductVariant } from '@/models/prisma';
 
 type PropType = {
-  products: IProductVariant[];
+  products: ISearchProductVariant[];
   options?: EmblaOptionsType;
 };
 
