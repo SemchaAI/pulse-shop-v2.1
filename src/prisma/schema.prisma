@@ -21,13 +21,6 @@ enum Role {
   GUEST
 }
 
-//not realized
-enum SpecialTypes {
-  NEW
-  SALE
-}
-
-//
 model User {
   id Int @id @default(autoincrement())
 
@@ -42,7 +35,7 @@ model User {
   phone     String?
 
   provider   String?
-  providerId String?
+  providerId String? @unique
 
   verified DateTime?
 
@@ -59,17 +52,6 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// model Token {
-//   token String @id @unique
-
-//   user     User?
-//   cart     Cart?
-//   favorite Favorite?
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
 model Cart {
   id Int @id @default(autoincrement())
 
@@ -80,7 +62,7 @@ model Cart {
   // tokenRef Token  @relation(fields: [token], references: [token])
   // token    String @unique
 
-  cartProduct CartProduct[]
+  cartProducts CartProduct[]
 
   totalAmount Int @default(0)
 
@@ -93,8 +75,8 @@ model CartProduct {
 
   quantity Int @default(1)
 
-  productItem   ProductItem @relation(fields: [productItemId], references: [id])
-  productItemId Int
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId Int
 
   cart   Cart @relation(fields: [cartId], references: [id])
   cartId Int
@@ -113,7 +95,7 @@ model Favorite {
   // tokenRef Token  @relation(fields: [token], references: [token])
   // token    String @unique
 
-  favoriteProduct FavoriteProduct[]
+  favoriteProducts FavoriteProduct[]
 
   // totalAmount Int @default(0)
 
@@ -126,10 +108,10 @@ model FavoriteProduct {
 
   // quantity Int @default(1)
 
-  productItem   ProductItem @relation(fields: [productItemId], references: [id])
-  productItemId Int
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  productVariantId Int
 
-  Favorite   Favorite @relation(fields: [favoriteId], references: [id])
+  favorite   Favorite @relation(fields: [favoriteId], references: [id])
   favoriteId Int
 
   createdAt DateTime @default(now())
@@ -137,72 +119,65 @@ model FavoriteProduct {
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-
-  totalRating Float  @default(0)
+  id          Int    @id @default(autoincrement())
   description String
 
-  colors Color[]
-  ram    Ram[]
-  memory Memory[]
-
-  // memory   Memory? @relation(fields: [memoryId], references: [id])
-  // memoryId Int?
-
-  // ram   Ram? @relation(fields: [ramId], references: [id])
-  // ramId Int?
-
-  category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  productItem ProductItem[]
-  // CartProduct   CartProduct[]
-  productInfo ProductInfo[]
-  rating      Rating[]
+  tags        Tag[]            @relation("ProductTags")
+  variants    ProductVariant[]
+  //collections Collection[]     @relation("ProductCollections")
+  images      Image[]
+  ProductInfo ProductInfo[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// model Special {
-//   id Int @id @default(autoincrement())
-
-//   type SpecialTypes
-//   sale Int?
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-model ProductItem {
-  id Int @id @default(autoincrement())
-
-  product   Product @relation(fields: [productId], references: [id])
+model ProductVariant {
+  id        Int     @id @default(autoincrement())
   productId Int
+  product   Product @relation(fields: [productId], references: [id])
 
-  title    String @unique
-  img      String
-  price    Int
-  oldPrice Int?
-  cnt      Int
+  name String
+  slug String @unique
 
-  cartProduct     CartProduct[]
-  FavoriteProduct FavoriteProduct[]
-  productImages   ProductImages?
+  stock    Int     @default(0) // Stock for this specific variant
+  price    Float // Price for this specific variant
+  oldPrice Float?
+  images   Image[]
 
-  color   Color? @relation(fields: [colorId], references: [id])
+  rating      Rating[]
+  totalRating Float    @default(0)
+
   colorId Int?
+  color   Color? @relation(fields: [colorId], references: [id])
 
-  memory   Memory? @relation(fields: [memoryId], references: [id])
-  memoryId Int?
-
-  ram   Ram? @relation(fields: [ramId], references: [id])
   ramId Int?
+  ram   Ram? @relation(fields: [ramId], references: [id])
+
+  memoryId Int?
+  memory   Memory? @relation(fields: [memoryId], references: [id])
+
+  favorite FavoriteProduct[]
+  cart     CartProduct[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([title, colorId, memoryId, ramId])
+  @@unique([productId, colorId, memoryId, ramId])
+}
+
+model Image {
+  id     Int     @id @default(autoincrement())
+  url    String // Image URL
+  isMain Boolean @default(false)
+
+  productId Int? // Optional relation to Product
+  product   Product?        @relation(fields: [productId], references: [id])
+  variantId Int? // Optional relation to ProductVariant
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
 }
 
 model ProductInfo {
@@ -220,25 +195,13 @@ model ProductInfo {
   @@unique([title, description, productId])
 }
 
-model ProductImages {
-  id Int @id @default(autoincrement())
-
-  thumbnails String[]
-
-  product       ProductItem @relation(fields: [productItemId], references: [id])
-  productItemId Int         @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Color {
   id Int @id @default(autoincrement())
 
-  name String @unique
+  name    String @unique
+  hexCode String
 
-  productItem ProductItem[]
-  products    Product[]
+  productVariant ProductVariant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -249,8 +212,7 @@ model Memory {
 
   name String @unique
 
-  productItem ProductItem[]
-  products    Product[]
+  productVariant ProductVariant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -261,8 +223,7 @@ model Ram {
 
   name String @unique
 
-  productItem ProductItem[]
-  products    Product[]
+  productVariant ProductVariant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -270,7 +231,8 @@ model Ram {
 
 model Category {
   id       Int       @id @default(autoincrement())
-  name     String    @unique
+  name     String
+  slug     String    @unique
   products Product[]
 
   createdAt DateTime @default(now())
@@ -287,13 +249,43 @@ model Rating {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
+  ProductVariant   ProductVariant? @relation(fields: [productVariantId], references: [id])
+  productVariantId Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, productId])
+  @@unique([userId, productVariantId])
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String
+  slug     String    @unique
+  products Product[] @relation("ProductTags")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Collection {
+//   id        String           @id @default(c uid())
+//   name      String           // Collection name (e.g., "Fall 2025", "Running Gear")
+//   slug      String           @unique
+//   products  Product[]        @relation("ProductCollections")
+// }
+
+model VerificationCode {
+  id Int @id @default(autoincrement())
+
+  code String
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code])
 }
 
 model Order {
@@ -318,19 +310,6 @@ model Order {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model VerificationCode {
-  id Int @id @default(autoincrement())
-
-  code String
-
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
-
-  createdAt DateTime @default(now())
-
-  @@unique([userId, code])
 }
 
 model BannerSlide {
