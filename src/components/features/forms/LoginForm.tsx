@@ -40,7 +40,8 @@ export const LoginForm = () => {
         position: 'top-center',
         icon: '👏',
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.session });
+      //mb dont need it because of push
+      queryClient.invalidateQueries({ queryKey: [queryKeys.session] });
       router.push('/');
     } catch (error) {
       console.log('error', error);
