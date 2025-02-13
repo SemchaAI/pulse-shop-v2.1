@@ -1,4 +1,4 @@
-import { ProductsSection } from '@/components/widgets';
+import { ProductsCarouselSection } from '@/components/widgets';
 import type { ICategory } from '@/models/prisma';
 import { prisma } from '@/prisma/prismaClient';
 
@@ -8,33 +8,36 @@ async function getProducts() {
     include: {
       products: {
         include: {
-          productItem: {
-            orderBy: {
-              id: 'desc',
+          images: {
+            take: 1,
+            where: {
+              isMain: true,
             },
-            // where: {
-            //   colorId: { in: colors },
-            //   memoryId: { in: memory },
-            //   ramId: { in: ram },
-            //   price: { gte: priceFrom, lte: priceTo },
-            // },
+          },
+          variants: {
+            take: 1,
           },
         },
+        take: 10,
       },
     },
   });
   return (
     <>
-      {categories.map((category) => (
-        <ProductsSection
-          key={category.id}
-          category={category}
-        />
-      ))}
+      {categories.map((category) => {
+        if (category.products.length > 0) {
+          return (
+            <ProductsCarouselSection
+              key={category.id}
+              category={category}
+            />
+          );
+        }
+      })}
     </>
   );
 }
 export default async function Home() {
   const products = await getProducts();
-  return <>{products}</>;
+  return products;
 }
