@@ -1,3 +1,6 @@
 export const queryKeys = {
-  session: ['session'],
+  session: 'session',
+  filters: 'filters',
+  products: 'products',
+  addCartItem: 'addCartItem',
 };
