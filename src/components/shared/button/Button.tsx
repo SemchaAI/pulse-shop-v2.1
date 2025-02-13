@@ -21,14 +21,14 @@ export const Button = ({
   ...props
 }: IProps) => {
   const sizeClass = {
-    default: 'w-auto',
+    default: '',
     full: 'w-full',
   };
   const versionClass = {
     text: 'bg-transparent hover:bg-border focus:bg-border focus:text-text-primary hover:text-text-primary',
     outline: `text-secondary border-solid border-secondary bg-transparent hover:bg-primary hover:text-black-01 hover:border-primary focus:bg-primary focus:text-black-01 focus:border-primary`,
     contain:
-      'text-black-01 bg-primary hover:bg-primary-action focus:bg-primary-action',
+      'text-black-01 bg-primary border border-solid border-transparent hover:bg-transparent hover:border-secondary hover:text-secondary  focus:bg-transparent focus:border-secondary focus:text-secondary',
   };
 
   const btnClass = `
