@@ -8,6 +8,6 @@ export interface IProduct extends Product {
   variants: ProductVariant[];
 }
 
-export interface IProductVariant extends ProductVariant {
+export interface ISearchProductVariant extends ProductVariant {
   images: Image[];
 }
