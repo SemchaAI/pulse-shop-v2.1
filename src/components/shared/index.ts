@@ -1,5 +1,9 @@
 export { Container } from './container/Container';
 export { NavLink } from './navLink/NavLink';
 export { Input } from './input/Input';
+export { Checkbox } from './input/Checkbox';
 export { Skeleton } from './skeleton/Skeleton';
 export { Button } from './button/Button';
+export { SaleBadge } from './badges/SaleBadge';
+export { CountBadge } from './badges/CountBadge';
+export { EntityBlock } from './blocks/EntityBlock';

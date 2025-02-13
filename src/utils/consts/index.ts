@@ -10,9 +10,11 @@ export {
   JWT_ACCESS,
   JWT_REFRESH,
   NEXT_PUBLIC_SERVER_URL,
+  NEXT_PUBLIC_IMAGES_HOST,
   GOOGLE_ID,
   GOOGLE_SECRET,
 } from './env';
 export { queryKeys } from './queryKeys';
 export { toastOptions } from './toastConfig';
 export { ROUTES, API_ROUTES } from './routes';
+export { filtersConfig } from './filtersConfig';
