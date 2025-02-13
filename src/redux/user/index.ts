@@ -1,6 +1,1 @@
-export {
-  sessionSlice,
-  clearSession,
-  loadSessionFromStorage,
-  setSession,
-} from './slice';
+export { sessionSlice, clearSession, setSession } from './slice';
