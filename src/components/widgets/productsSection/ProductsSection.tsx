@@ -1,36 +1,31 @@
-import { ProductsCarousel } from '@/components/entities';
-import { Container } from '@/components/shared';
-import type { ICategory } from '@/models/prisma';
-import Link from 'next/link';
+import { ProductCardSkeleton, ProductsCard } from '@/components/entities';
+import type { IProductVariant } from '@/models/prisma';
 
 interface IProps {
-  category: ICategory;
+  category: string;
+  products: IProductVariant[];
+  isLoading: boolean;
 }
 
-export const ProductsSection = ({ category }: IProps) => {
-  if (!category.products || !category.products.length) {
-    return null;
-  }
-
+export const ProductsSection = ({ category, products, isLoading }: IProps) => {
+  console.log('products', products);
   return (
-    <section className="my-3">
-      <Container>
-        <div className="flex flex-col w-full">
-          <div className="flex justify-between items-center">
-            <h3>{category.name}</h3>
-            <Link
-              className="text-primary"
-              href={`/categories/${category.name.toLowerCase()}`}
-            >
-              View All
-            </Link>
-          </div>
-          <ProductsCarousel
-            products={category.products}
-            options={{ align: 'start' }}
-          />
-        </div>
-      </Container>
+    <section className="flex flex-col gap-5">
+      <h3 className="typo-title-24 capitalize">{category}</h3>
+      <ul className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {isLoading
+          ? Array.from({ length: 9 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))
+          : products.map((product, i) => (
+              <li key={product.id}>
+                <ProductsCard
+                  variant={product}
+                  isPriority={i < 8}
+                />
+              </li>
+            ))}
+      </ul>
     </section>
   );
 };
