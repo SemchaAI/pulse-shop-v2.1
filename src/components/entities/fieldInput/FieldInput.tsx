@@ -1,6 +1,6 @@
 'use client';
 import { Input } from '@/components/shared';
-import { ValidationTypes } from '@/utils';
+import { ValidationTypes } from '@/utils/consts';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
