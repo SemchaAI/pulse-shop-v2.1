@@ -10,7 +10,7 @@ type UseSessionReturn = {
 };
 export const useSession = (): UseSessionReturn => {
   const { data, status } = useQuery({
-    queryKey: queryKeys.session,
+    queryKey: [queryKeys.session],
     queryFn: getSession,
     //staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     refetchOnWindowFocus: true,
