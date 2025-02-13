@@ -6,9 +6,14 @@ export interface ApiResponse {
 export interface IUserSession {
   id: number;
   role: Role;
+  provider: string | null;
   name: string;
   avatar: string | null;
   email: string;
+  // cartTotal: number;
+  // favoriteTotal: number;
+}
+export interface ISessionToken extends IUserSession {
   exp: number;
 }
 export interface IUserResponse {
