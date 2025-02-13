@@ -96,6 +96,30 @@ html[data-mode="dark"]{
   @apply text-base font-normal tracking-wide;
 }
 
+@layer utilities {
+  .once {
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  .custom-scrollbar {
+    @apply overflow-auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary);
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  /* .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: var(--secondary);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-action);
+  } */
+}
 
 
 html {
@@ -157,6 +181,34 @@ button {
 
   cursor: pointer;
 }
+
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  @apply w-6 h-6 cursor-pointer pointer-events-auto relative bg-primary border-2 border-solid border-border shadow-md rounded-full;
+} 
+input[type="range"]::-moz-range-thumb { 
+  @apply w-6 h-6 cursor-pointer pointer-events-auto relative bg-primary border-2 border-solid border-border shadow-md rounded-full;
+} 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  pointer-events: auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  -webkit-appearance: none;
+  @apply bg-green-500;
+} 
+*/
 @layer utilities {
   input:-webkit-autofill,
   input:-webkit-autofill:focus {
