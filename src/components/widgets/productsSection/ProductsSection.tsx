@@ -1,9 +1,9 @@
 import { ProductCardSkeleton, ProductsCard } from '@/components/entities';
-import type { IProductVariant } from '@/models/prisma';
+import type { ISearchProductVariant } from '@/models/prisma';
 
 interface IProps {
   category: string;
-  products: IProductVariant[];
+  products: ISearchProductVariant[];
   isLoading: boolean;
 }
 
