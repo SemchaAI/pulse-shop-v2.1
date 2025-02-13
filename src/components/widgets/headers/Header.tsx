@@ -1,20 +1,18 @@
 'use client';
 import Link from 'next/link';
-import { Container, NavLink, Skeleton } from '@/components/shared';
-import { Activity, Heart, Search, ShoppingCart, User, X } from 'lucide-react';
+import { Activity, X } from 'lucide-react';
 import { useState } from 'react';
-import { useScrollControl, useSession } from '@/utils/hooks';
-import { ThemeSwitcher } from '@/components/features';
-import Image from 'next/image';
 
-export const Header = () => {
+import { Container, NavLink } from '@/components/shared';
+import { useScrollControl } from '@/utils/hooks';
+// import { HeaderControls } from './HeaderControls';
+
+export const Header = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   useScrollControl(isMenuOpen);
   function clickHandler() {
     setIsMenuOpen((prev) => !prev);
   }
-  const { data: user, status } = useSession();
-  console.log('user', user, status);
 
   return (
     <header className="w-full bg-foreground text-text-primary relative overflow-hidden">
@@ -60,57 +58,9 @@ export const Header = () => {
                 </li>
               </ul>
             </nav>
-            <div className="flex justify-center items-center gap-4 w-full p-3 border-t border-primary lg:w-min lg:justify-end lg:p-0 lg:border-0">
-              <button
-                type="button"
-                className="w-6 flex"
-              >
-                <Search size={24} />
-              </button>
-              <Link
-                className="w-6"
-                href="/cart"
-              >
-                <ShoppingCart size={24} />
-              </Link>
-              <Link
-                className="w-6"
-                href="/cart"
-              >
-                <Heart size={24} />
-              </Link>
-              <ThemeSwitcher />
-              {user ? (
-                <Link
-                  className="w-6"
-                  href="/profile"
-                >
-                  <Image
-                    src={user.avatar || '/images/avatar.svg'}
-                    alt={user.name || 'User avatar'}
-                    width={24}
-                    height={24}
-                    className="rounded-full"
-                  />
-                </Link>
-              ) : status === 'loading' ? (
-                // <div className="w-6 h-6 aspect-square border-4 border-blue-500 border-t-transparent rounded-full" />
-                <Skeleton
-                  width="24px"
-                  height="24px"
-                  borderRadius="50%"
-                />
-              ) : (
-                <Link
-                  className="w-6"
-                  href="/login"
-                >
-                  <User size={24} />
-                </Link>
-              )}
-            </div>
+            {children}
           </div>
-          <div className="flex visible w-min bg-primary lg:invisible lg:w-0">
+          <div className="flex visible bg-primary lg:invisible lg:w-0">
             <button onClick={clickHandler}>Burger</button>
           </div>
         </div>
