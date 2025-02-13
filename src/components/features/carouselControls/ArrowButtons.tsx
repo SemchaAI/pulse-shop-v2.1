@@ -11,7 +11,7 @@ type UsePrevNextButtonsType = {
   onNextButtonClick: () => void;
 };
 
-export const usePrevNextButtons = (
+const usePrevNextButtons = (
   emblaApi: EmblaCarouselType | undefined
 ): UsePrevNextButtonsType => {
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
@@ -54,7 +54,7 @@ type PropType = PropsWithChildren<
   >
 >;
 
-export const PrevButton: React.FC<PropType> = (props) => {
+const PrevButton: React.FC<PropType> = (props) => {
   const { children, ...restProps } = props;
 
   return (
@@ -73,7 +73,7 @@ export const PrevButton: React.FC<PropType> = (props) => {
   );
 };
 
-export const NextButton: React.FC<PropType> = (props) => {
+const NextButton: React.FC<PropType> = (props) => {
   const { children, ...restProps } = props;
 
   return (
@@ -91,3 +91,4 @@ export const NextButton: React.FC<PropType> = (props) => {
     </button>
   );
 };
+export { usePrevNextButtons, PrevButton, NextButton };
