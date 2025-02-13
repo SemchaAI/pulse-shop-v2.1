@@ -15,12 +15,32 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: userData.id },
+      include: {
+        cart: {
+          select: {
+            _count: {
+              select: {
+                cartProducts: true,
+              },
+            },
+          },
+        },
+        favorite: {
+          select: {
+            _count: {
+              select: {
+                favoriteProducts: true,
+              },
+            },
+          },
+        },
+      },
     });
+
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
     const filteredUser = userSessionAdapter(user);
-
     return NextResponse.json({ user: filteredUser, message }, { status: 200 });
   } catch (error) {
     console.log(`[GET USER] server error ${error}`);
