@@ -1,7 +1,7 @@
 import { ProductCartControls } from '@/components/features';
 import { StarRating } from '@/components/features/starRating/StarRating';
 import { SaleBadge } from '@/components/shared';
-import { IProductVariant } from '@/models/prisma';
+import { ISearchProductVariant } from '@/models/prisma';
 import { NEXT_PUBLIC_IMAGES_HOST } from '@/utils/consts/env';
 
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 interface IProps {
-  variant: IProductVariant;
+  variant: ISearchProductVariant;
   isPriority: boolean;
 }
 
