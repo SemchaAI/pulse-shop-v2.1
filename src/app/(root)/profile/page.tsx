@@ -17,7 +17,7 @@ export default function ProfilePage() {
     try {
       const res = await Logout();
       if (!res) return;
-      queryClient.setQueryData(queryKeys.session, null);
+      queryClient.setQueryData([queryKeys.session], null);
       toast.success('Logout successful');
       router.push('/');
     } catch (error) {
