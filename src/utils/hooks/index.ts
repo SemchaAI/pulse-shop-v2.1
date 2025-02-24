@@ -5,5 +5,5 @@ export { useGetFilters } from './useGetFilters';
 export { useFilters } from './useFilters';
 export { useSet } from './useSet';
 export { useQueryFilters } from './useQueryFilters';
-export { useCartHandler } from './useCartHandler';
+// export { useCartHandler } from './useCartHandler';
 // export { useCriticalData } from './useCriticalData';
