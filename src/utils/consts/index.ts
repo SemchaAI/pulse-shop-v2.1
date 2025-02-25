@@ -18,3 +18,4 @@ export { queryKeys } from './queryKeys';
 export { toastOptions } from './toastConfig';
 export { ROUTES, API_ROUTES } from './routes';
 export { filtersConfig } from './filtersConfig';
+export { HeaderNav } from './nav';
