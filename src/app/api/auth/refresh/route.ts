@@ -7,6 +7,7 @@ import { IUserSession } from '@/models/auth';
 import { userSessionAdapter } from '@/utils/helpers';
 import { generateTokens } from '@/utils';
 import { JWT_REFRESH } from '@/utils/consts';
+import { getFavoriteIds } from '@/utils/helpers/getFavoriteIds';
 
 export async function GET() {
   try {
@@ -43,8 +44,18 @@ export async function GET() {
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
+    const cartTotal = await prisma.cartProduct.count({
+      where: {
+        cart: { userId: user.id },
+      },
+    });
     //adapt user to session
-    const userSession = userSessionAdapter(user);
+    const favoriteProducts = await getFavoriteIds(user.id);
+    const userSession = userSessionAdapter({
+      ...user,
+      cartTotal,
+      favoriteProducts,
+    });
     // Generate a new access token
     const { refreshToken, accessToken } = await generateTokens(userSession);
 
