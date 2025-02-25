@@ -1,20 +1,26 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
-export const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState('light'); // Default theme is light
+export const ThemeSwitcher = memo(() => {
+  const [theme, setTheme] = useState<string | null>(null); // Default
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-mode', theme);
+    const storedTheme = localStorage.getItem('theme') || 'light'; // Default
+    if (theme !== storedTheme) setTheme(storedTheme);
+    document.documentElement.setAttribute('data-mode', storedTheme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    if (!theme) return;
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   return (
     <button
+      aria-label="toggle theme"
       onClick={toggleTheme}
       className="rounded transition-all w-6"
     >
@@ -28,4 +34,6 @@ export const ThemeSwitcher = () => {
       )}
     </button>
   );
-};
+});
+
+ThemeSwitcher.displayName = 'ThemeSwitcher';
