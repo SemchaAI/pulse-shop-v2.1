@@ -10,8 +10,8 @@ export interface IUserSession {
   name: string;
   avatar: string | null;
   email: string;
-  // cartTotal: number;
-  // favoriteTotal: number;
+  cartTotal: number;
+  favoriteProducts: number[];
 }
 export interface ISessionToken extends IUserSession {
   exp: number;
