@@ -5,16 +5,17 @@ import { usePathname } from 'next/navigation';
 interface IProps {
   href: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export const NavLink = ({ href, children }: IProps) => {
+export const NavLink = ({ href, children, className }: IProps) => {
   const path = usePathname();
   return (
     <Link
       href={href}
       className={`${
         path.startsWith(href) ? 'text-primary' : 'text-text-primary'
-      }`}
+      } ${className}`}
     >
       {children}
     </Link>
