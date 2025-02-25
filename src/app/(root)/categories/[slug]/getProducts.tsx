@@ -19,11 +19,13 @@ export const Products = () => {
   });
 
   const {
-    data: queryData = {
-      data: [],
-      meta: { total: 0, currentPage: 1, perPage: 9, lastPage: 0 },
-    },
+    data: queryData,
+    //  = {
+    //   data: [],
+    //   meta: { total: 0, currentPage: 1, perPage: 9, lastPage: 0 },
+    // },
     isLoading,
+    isSuccess,
   } = useQuery({
     queryKey: [queryKeys.products, query],
     queryFn: () => search(query),
@@ -31,20 +33,19 @@ export const Products = () => {
     staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
   });
 
-  const { data, meta } = queryData;
   return (
     <div className="w-full flex flex-col justify-between gap-5 py-4">
-      {data.length > 0 && (
-        <ProductsSection
-          isLoading={isLoading}
-          category={slug !== 'all' ? slug : 'All Products'}
-          products={data}
-        />
-      )}
+      <ProductsSection
+        isLoading={isLoading}
+        category={slug !== 'all' ? slug : 'All Products'}
+        products={isSuccess ? queryData.data : []}
+        skeletons={9}
+        withPriority={8}
+      />
       <Pagination
         isLoading={isLoading}
-        lastPage={meta.lastPage}
-        currentPage={meta.currentPage}
+        lastPage={(isSuccess && queryData.meta.lastPage) || 1}
+        currentPage={(isSuccess && queryData.meta.currentPage) || 1}
       />
     </div>
   );
