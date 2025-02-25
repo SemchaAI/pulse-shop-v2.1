@@ -1,7 +1,8 @@
 'use client';
 import { ICartResponse, ICartSliceData } from '@/models/cart';
-import { addCartItem } from '@/utils/api/http/cartApi';
+// import { addCartItem } from '@/utils/api/http/cartApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { initUserData, LOGOUT } from '../global';
 
 interface CartState extends ICartSliceData {
   loading: boolean;
@@ -34,43 +35,39 @@ export const cartSlice = createSlice({
     updateCartTotal(state: CartState, action: PayloadAction<ICartResponse>) {
       state.cartTotal = action.payload.cartProducts.length;
     },
+    removeCartItemById(state: CartState, action: PayloadAction<number>) {
+      state.cartProducts = state.cartProducts.filter(
+        (item) => item.id !== action.payload
+      );
+      state.totalAmount = state.cartProducts.reduce((acc, item) => {
+        return acc + item.price * item.quantity;
+      }, 0);
+      state.cartTotal = state.cartProducts.length;
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addCartItem.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(addCartItem.fulfilled, (state, action) => {
-        console.log('addCartItem.fulfilled', action.payload);
-        state.cartProducts = action.payload.cartProducts;
-        state.totalAmount = action.payload.totalAmount;
+      // .addCase(addCartItem.pending, (state) => {
+      //   state.loading = true;
+      // })
+      // .addCase(addCartItem.fulfilled, (state, action) => {
+      //   console.log('addCartItem.fulfilled', action.payload);
+      //   state.cartProducts = action.payload.cartProducts;
+      //   state.totalAmount = action.payload.totalAmount;
+      //   state.cartTotal = action.payload.cartTotal;
+      //   state.loading = false;
+      // })
+      // .addCase(addCartItem.rejected, (state, action) => {
+      //   state.error = action.payload as string;
+      //   state.loading = false;
+      // })
+      .addCase(initUserData, (state, action) => {
         state.cartTotal = action.payload.cartTotal;
-        state.loading = false;
+        state.cartProducts = []; // Start with an empty cart
       })
-      .addCase(addCartItem.rejected, (state, action) => {
-        state.error = action.payload as string;
-        state.loading = false;
-      });
+      .addCase(LOGOUT, () => initialState);
   },
 });
 
-export const { clearCart, updateCartTotal, initCart } = cartSlice.actions;
-
-// .addCase(fetchCart.pending, (state: CartState) => {
-//   state.loading = true;
-//   state.error = null;
-// })
-// .addCase(
-//   fetchCart.fulfilled,
-//   (state: CartState, action: PayloadAction<ICartResponse | null>) => {
-//     state.loading = false;
-//     if (action.payload) {
-//       state.cartProducts = action.payload.cartProducts;
-//       state.totalAmount = action.payload.totalAmount || 0;
-//     }
-//   }
-// )
-// .addCase(fetchCart.rejected, (state, action) => {
-//   state.loading = false;
-//   state.error = (action.payload as string) || 'Failed to fetch cart';
-// })
+export const { clearCart, updateCartTotal, initCart, removeCartItemById } =
+  cartSlice.actions;
