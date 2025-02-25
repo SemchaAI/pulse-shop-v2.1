@@ -4,5 +4,4 @@ export { ProductsCarouselSection } from './productsSection/ProductsCarouselSecti
 export { ProductsSection } from './productsSection/ProductsSection';
 export { AuthSection } from './sections/AuthSection';
 export { Filters } from './filters/Filters';
-export { HeaderControls } from './headers/HeaderControls';
 export { CartSection } from './sections/CartSection';
