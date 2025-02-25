@@ -2,6 +2,7 @@
 // import type { ICartResponse } from '@/models/cart';
 import { prisma } from '@/prisma/prismaClient';
 import { getServerSession } from '@/utils/helpers';
+import { getFavoriteIds } from '@/utils/helpers/getFavoriteIds';
 
 // interface IProps {
 //   cartTotal: number;
@@ -9,38 +10,21 @@ import { getServerSession } from '@/utils/helpers';
 // }
 
 export const getCriticalData = async () => {
-  const { user } = await getServerSession();
-  let cartTotal = 0;
-  const favoriteTotal = 0;
-  if (user) {
-    try {
-      const [cartData] = await prisma.$transaction([
-        prisma.cart.findFirst({
-          where: {
-            userId: user.id,
-          },
-          include: {
-            _count: {
-              select: { cartProducts: true },
-            },
-          },
-        }),
-      ]);
-      if (cartData) {
-        cartTotal = cartData._count.cartProducts;
-      }
-      // if (favoriteData) {
-      //   favorite = {
-      //     favoriteProducts: favoriteData.favoriteProducts,
-      //     favoriteTotal: favoriteData.favoriteProducts.length,
-      //   };
-      // }
-    } catch (error) {
-      console.log('error', error);
-    }
+  try {
+    const { user } = await getServerSession();
+    if (!user) return { user: null, cartTotal: 0, favoriteProducts: [] };
+
+    const cartTotal = await prisma.cartProduct.count({
+      where: {
+        cart: { userId: user.id },
+      },
+    });
+    const favoriteProducts = await getFavoriteIds(user.id);
+    return { user, cartTotal, favoriteProducts };
+  } catch (error) {
+    console.log('error', error);
+    return { user: null, cartTotal: 0, favoriteProducts: [] };
   }
-  console.log('RootLayout');
-  return { user, cartTotal, favoriteTotal };
 };
 
 // interface IProps {
