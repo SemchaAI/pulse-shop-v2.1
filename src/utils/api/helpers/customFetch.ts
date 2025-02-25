@@ -4,6 +4,8 @@ import { getAccessToken } from './getAccessToken';
 type FetchOptions = RequestInit & { retry?: boolean }; // Add a custom "retry" flag
 
 export async function customFetch(url: string, options: FetchOptions = {}) {
+  // Add token to headers can be unnecessary
+  //because i use single domain (cookies directly)
   const token = await getAccessToken();
   const headers = {
     ...options.headers,
