@@ -11,52 +11,58 @@ import { IUserSession } from '@/models/auth';
 import { NEXT_PUBLIC_SERVER_DOMAIN_URL } from '@/utils/consts/env';
 import { cookies } from 'next/headers';
 import { IGuestData } from '../auth/credentials/guest/route';
+import { ICartSliceData } from '@/models/cart';
 
 export async function GET() {
   try {
-    // message, status,
-    const { user } = await getServerSession();
-    //console.log('user', user);
+    const { user, status } = await getServerSession(); // Get user session
+    let cart: ICartSliceData = {
+      cartProducts: [],
+      cartTotal: 0,
+      totalAmount: 0,
+    };
+    if (status === 401) return NextResponse.json(cart, { status });
 
-    if (!user)
-      return NextResponse.json({
-        cartProducts: [],
-        totalAmount: 0,
-      });
-
-    const userCart = await prisma.cart.findFirst({
-      where: {
-        userId: Number(user.id),
-      },
-      include: {
-        cartProducts: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: {
-            productVariant: {
-              include: {
-                product: true,
-                color: true,
-                memory: true,
-                ram: true,
+    if (user) {
+      const res = await prisma.cart.findFirst({
+        where: { userId: user.id },
+        include: {
+          cartProducts: {
+            orderBy: { createdAt: 'desc' },
+            include: {
+              productVariant: {
+                include: {
+                  product: true,
+                  color: true,
+                  memory: true,
+                  ram: true,
+                  images: {
+                    where: { isMain: true },
+                    take: 1,
+                  },
+                },
               },
             },
           },
         },
-      },
-    });
-    console.log('userCart', userCart);
-    if (!userCart)
-      return NextResponse.json({
-        cartProducts: [],
-        totalAmount: 0,
       });
 
-    return NextResponse.json(userCart);
+      if (res) {
+        cart = getCartDetails({
+          cartProducts: res.cartProducts,
+          totalAmount: res.totalAmount,
+          cartTotal: res.cartProducts.length,
+        });
+      }
+    }
+
+    return NextResponse.json(cart); // Respond with the cart data
   } catch (error) {
-    console.log('[CART_GET] Server error', error);
-    return NextResponse.json({ message: 'Cannot get cart' }, { status: 500 });
+    console.error('Error fetching cart:', error);
+    return NextResponse.json(
+      { cartProducts: [], cartTotal: 0, totalAmount: 0 },
+      { status: 500 } // Return error response with a status code
+    );
   }
 }
 
