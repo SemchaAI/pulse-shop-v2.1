@@ -1,1 +1,7 @@
-export { cartSlice, clearCart, updateCartTotal, initCart } from './slice';
+export {
+  cartSlice,
+  clearCart,
+  updateCartTotal,
+  initCart,
+  removeCartItemById,
+} from './slice';
