@@ -37,8 +37,6 @@ export async function GET(req: NextRequest) {
       },
     };
 
-    console.log('someConfig', config, someConfig, selectConfig);
-
     const [ram, memory, colors] = await prisma.$transaction([
       prisma.ram.findMany({
         where: someConfig,
