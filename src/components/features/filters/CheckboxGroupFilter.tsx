@@ -29,8 +29,8 @@ export const CheckboxGroupFilter = ({
     item.name.toLowerCase().includes(searchValue.toLowerCase())
   );
   return (
-    <>
-      {list.length > 5 && (
+    <div className="flex flex-col">
+      {items.length > 5 && (
         <div className="mb-5">
           <Input
             type="text"
@@ -56,6 +56,6 @@ export const CheckboxGroupFilter = ({
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
