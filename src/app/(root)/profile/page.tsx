@@ -6,18 +6,21 @@ import { Button, Container } from '@/components/shared';
 import { Logout } from './logoutAction';
 
 import { queryClient } from '@/utils';
-import { useSession } from '@/utils/hooks';
+import { useAppDispatch, useSession } from '@/utils/hooks';
 import { queryKeys } from '@/utils/consts';
 import { useRouter } from 'next/navigation';
+import { LOGOUT } from '@/redux/global';
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { data } = useSession();
+  const dispatch = useAppDispatch();
+  const { data: user } = useSession();
   const logoutHandler = async () => {
     try {
       const res = await Logout();
       if (!res) return;
       queryClient.setQueryData([queryKeys.session], null);
+      dispatch(LOGOUT());
       toast.success('Logout successful');
       router.push('/');
     } catch (error) {
@@ -28,14 +31,15 @@ export default function ProfilePage() {
     <section>
       <Container>
         <h2>Profile</h2>
-        {data && (
+        {user && (
           <div>
-            <p>{data.name}</p>
-            <p>{data.email}</p>
-            <p>{data.role}</p>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p>{user.role}</p>
           </div>
         )}
         <Button
+          aria-label="logout"
           version="contain"
           onClick={() => logoutHandler()}
         >
