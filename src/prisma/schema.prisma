@@ -95,7 +95,8 @@ model Favorite {
   // tokenRef Token  @relation(fields: [token], references: [token])
   // token    String @unique
 
-  favoriteProducts FavoriteProduct[]
+  // favoriteProducts FavoriteProduct[]
+  favoriteProducts ProductVariant[] @relation("FavoriteProducts")
 
   // totalAmount Int @default(0)
 
@@ -103,20 +104,20 @@ model Favorite {
   updatedAt DateTime @updatedAt
 }
 
-model FavoriteProduct {
-  id Int @id @default(autoincrement())
+// model FavoriteProduct {
+//   id Int @id @default(autoincrement())
 
-  // quantity Int @default(1)
+//   // quantity Int @default(1)
 
-  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
-  productVariantId Int
+//   productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+//   productVariantId Int
 
-  favorite   Favorite @relation(fields: [favoriteId], references: [id])
-  favoriteId Int
+//   favorite   Favorite @relation(fields: [favoriteId], references: [id])
+//   favoriteId Int
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model Product {
   id          Int    @id @default(autoincrement())
@@ -160,7 +161,7 @@ model ProductVariant {
   memoryId Int?
   memory   Memory? @relation(fields: [memoryId], references: [id])
 
-  favorite FavoriteProduct[]
+  favorite Favorite[]    @relation("FavoriteProducts")
   cart     CartProduct[]
 
   createdAt DateTime @default(now())
