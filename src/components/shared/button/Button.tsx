@@ -1,12 +1,10 @@
-interface IProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   className?: string;
   version?: 'text' | 'outline' | 'contain';
   size?: 'default' | 'full';
   icon?: boolean;
   type?: 'submit' | 'reset' | 'button';
-  disabled?: boolean;
-  label?: string;
   onClick?: () => void;
 }
 
