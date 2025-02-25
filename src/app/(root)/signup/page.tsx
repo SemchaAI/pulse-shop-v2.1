@@ -1,20 +1,15 @@
 import { RegisterForm } from '@/components/features';
-import { Container } from '@/components/shared';
-// import { AuthSection } from '@/components/widgets';
+import { Container, EntityBlock } from '@/components/shared';
 
-export default function Signup() {
+export default async function Signup() {
   return (
-    <>
-      {/* <AuthSection /> */}
-      <section>
-        <Container>
-          <h2>Sign up</h2>
-          {/* <hr /> */}
-          <div>
-            <RegisterForm />
-          </div>
-        </Container>
-      </section>
-    </>
+    <section className="flex flex-col justify-center grow">
+      <Container>
+        <EntityBlock className="m-auto max-w-[600px]">
+          <h1 className="typo-title-30 text-center">Sign up</h1>
+          <RegisterForm />
+        </EntityBlock>
+      </Container>
+    </section>
   );
 }
