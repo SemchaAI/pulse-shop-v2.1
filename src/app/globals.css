@@ -58,7 +58,10 @@ html[data-mode="dark"]{
   /* Background Colors */
   --background: #15141B;        
   /* Foreground Colors */
-  --foreground: #191922;     
+  --foreground: #191922; 
+
+  /* For toggle favorite */
+  --black-01:#15141B;
 
   /* action */
   --action-disabled: #15141ba9;
@@ -80,10 +83,11 @@ html[data-mode="dark"]{
 
 
 .typo-title-24 {
-  @apply text-2xl font-bold leading-6 tracking-wide ;
+  @apply text-2xl font-bold leading-6 tracking-wide font-nunito;
 }
 .typo-title-30 {
-  @apply text-3xl font-bold leading-8 tracking-normal;
+  @apply text-3xl font-bold tracking-normal font-nunito;
+  /* leading-8 */
 }
 
 .typo-body-12 {
@@ -165,7 +169,7 @@ body {
 
   color: var(--text-primary);
   background: var(--background);
-  transition: color 0.5s, background-color 0.5s;
+  transition: color 0.3s;
 
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
