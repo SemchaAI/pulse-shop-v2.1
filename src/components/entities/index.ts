@@ -1,6 +1,5 @@
 export { ProductsCarousel } from './products/ProductsCarousel';
 export { ProductsCard } from './products/ProductsCard';
-// export { ProductList } from './products/ProductList-old';
 export { FieldInput } from './fieldInput/FieldInput';
 export { Form } from './form/Form';
 export { ProductCarousel } from './products/ProductCarousel';
@@ -8,3 +7,4 @@ export { ProductDetails } from './products/ProductDetails';
 export { ProductCardSkeleton } from './products/ProductCardSkeleton';
 export { FilterWrapper } from './filterWrapper/FilterWrapper';
 export { RangeSlider } from './rangeSlider/RangeSlider';
+export { CartProduct } from './cart/CartProduct';
