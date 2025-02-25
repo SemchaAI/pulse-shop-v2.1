@@ -29,7 +29,11 @@ export async function GET(): Promise<NextResponse<IGuestData>> {
     });
     //adapt here to see in development errors
     //if i will change basic session data
-    const userSession = userSessionAdapter(newUser);
+    const userSession = userSessionAdapter({
+      ...newUser,
+      cartTotal: 0,
+      favoriteProducts: [],
+    });
     const { refreshToken, accessToken } = await generateTokens(userSession);
 
     if (!refreshToken || !accessToken) {
