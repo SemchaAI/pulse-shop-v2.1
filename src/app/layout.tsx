@@ -1,14 +1,10 @@
-import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Nunito } from 'next/font/google';
 
-import { Footer, Header, HeaderControls } from '@/components/widgets';
+import { Footer, Header } from '@/components/widgets';
 import { Providers } from './providers';
 
-import { getCriticalData } from './getCriticalData';
-
 import './globals.css';
-// import { getCartDetails } from '@/utils/helpers';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const nunito = Nunito({
@@ -23,34 +19,25 @@ export const metadata: Metadata = {
   description: 'Pulse shop with tailwind css',
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
+type PageProps = {
   children: React.ReactNode;
-}>) {
-  const { cartTotal, favoriteTotal, user } = await getCriticalData();
-  // const criticalDataFlatCart = getCartDetails(cart);
-  const initialData = {
-    cartTotal,
-    user,
-    favoriteTotal,
-  };
-
+};
+export default function RootLayout({ children }: Readonly<PageProps>) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
     >
       <body
-        className={`${inter.className} ${nunito.variable} antialiased grid grid-rows-[auto,1fr,auto] min-h-screen bg-background text-text-primary`}
+        className={`${inter.className} ${nunito.variable} antialiased flex flex-col min-h-screen bg-background text-text-primary`}
       >
-        <Providers criticalData={initialData}>
-          <Header>
-            {/* // cart={cart}
-            // favorite={favorite} */}
-            <HeaderControls user={user} />
-          </Header>
-          <main className="flex flex-col">{children}</main>
+        <Providers>
+          <Header />
+          <main className="flex-1 flex flex-col">
+            {/* <Suspense fallback={<div>Loading...</div>}> */}
+            {children}
+            {/* </Suspense> */}
+          </main>
           <Footer />
         </Providers>
       </body>
