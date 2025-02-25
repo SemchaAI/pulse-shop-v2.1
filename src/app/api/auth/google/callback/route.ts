@@ -6,7 +6,7 @@ import { getGoogleToken } from './getGoogleToken';
 import { getGoogleUser } from './getGoogleUser';
 import { prisma } from '@/prisma/prismaClient';
 import { generateTokens } from '@/utils';
-import { getServerSession, userSessionAdapter } from '@/utils/helpers';
+import { userSessionAdapter } from '@/utils/helpers';
 import { randomUUID } from 'crypto';
 import { Role } from '@prisma/client';
 import { NEXT_PUBLIC_SERVER_DOMAIN_URL } from '@/utils/consts/env';
@@ -40,12 +40,25 @@ export async function GET(req: NextRequest) {
       include: {
         cart: { include: { _count: { select: { cartProducts: true } } } },
         favorite: {
-          include: { _count: { select: { favoriteProducts: true } } },
+          include: {
+            favoriteProducts: {
+              orderBy: { createdAt: 'desc' },
+              select: {
+                id: true,
+              },
+            },
+          },
         },
       },
     });
     if (isAlreadyExists) {
-      const userDTO = userSessionAdapter(isAlreadyExists);
+      const userDTO = userSessionAdapter({
+        ...isAlreadyExists,
+        cartTotal: isAlreadyExists.cart?._count.cartProducts || 0,
+        favoriteProducts:
+          isAlreadyExists.favorite?.favoriteProducts.map((item) => item.id) ||
+          [],
+      });
       const { accessToken, refreshToken } = await generateTokens(userDTO);
       cookieStore.set('refreshToken', refreshToken, {
         httpOnly: true,
@@ -62,7 +75,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL(NEXT_PUBLIC_SERVER_DOMAIN_URL));
     }
 
-    const { user: candidate } = await getServerSession();
+    const candidate = await prisma.user.findUnique({
+      where: { email: userData.email },
+    });
     if (candidate) {
       if (candidate.provider !== null)
         throw new Error('User already authenticated with any provider');
@@ -79,6 +94,10 @@ export async function GET(req: NextRequest) {
           provider: 'google',
           providerId: userData.id,
           verified: new Date(),
+          password: randomUUID(),
+          // we need to block possibility to login with password
+          // because have situation when someone signup with this email
+          //and not verified (he haven't access to this email)
         },
         include: {
           cart: {
@@ -90,8 +109,11 @@ export async function GET(req: NextRequest) {
           },
           favorite: {
             include: {
-              _count: {
-                select: { favoriteProducts: true },
+              favoriteProducts: {
+                orderBy: { createdAt: 'desc' },
+                select: {
+                  id: true,
+                },
               },
             },
           },
@@ -109,7 +131,12 @@ export async function GET(req: NextRequest) {
         });
       }
 
-      const userDTO = userSessionAdapter(newUser);
+      const userDTO = userSessionAdapter({
+        ...newUser,
+        cartTotal: newUser.cart?._count.cartProducts || 0,
+        favoriteProducts:
+          newUser.favorite?.favoriteProducts.map((item) => item.id) || [],
+      });
       const { accessToken, refreshToken } = await generateTokens(userDTO);
       cookieStore.set('refreshToken', refreshToken, {
         httpOnly: true,
@@ -136,7 +163,12 @@ export async function GET(req: NextRequest) {
           verified: new Date(),
         },
       });
-      const userDTO = userSessionAdapter(newUser);
+      if (!newUser) throw new Error('Failed to create user using Google.');
+      const userDTO = userSessionAdapter({
+        ...newUser,
+        cartTotal: 0,
+        favoriteProducts: [],
+      });
       const { accessToken, refreshToken } = await generateTokens(userDTO);
       cookieStore.set('refreshToken', refreshToken, {
         httpOnly: true,
@@ -155,11 +187,11 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.log(`[GOOGLE CALLBACK USER] server error ${error}`);
     // redirect('/');
-    const errorMessage = encodeURIComponent(
-      error instanceof Error ? error.message : 'Unknown error occurred'
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+    console.log('errorMessage', errorMessage);
     return NextResponse.redirect(
-      new URL(`${NEXT_PUBLIC_SERVER_DOMAIN_URL}?error=${errorMessage}`)
+      new URL(`${NEXT_PUBLIC_SERVER_DOMAIN_URL}?toastMessage=${errorMessage}`)
     );
   }
 }
