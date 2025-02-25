@@ -1,9 +1,13 @@
 import Image from 'next/image';
-import { Heart, ShoppingCart, WalletCards } from 'lucide-react';
+import { WalletCards } from 'lucide-react';
 
 import { ProductCarousel, ProductDetails } from '@/components/entities';
 import { Button, Container, EntityBlock } from '@/components/shared';
-import { ProductSwitcher } from '@/components/features';
+import {
+  AddToCard,
+  ProductSwitcher,
+  ToggleFavorite,
+} from '@/components/features';
 
 import { getProduct } from './getProductAction';
 
@@ -51,33 +55,24 @@ export default async function ProductPage({ params }: IProps) {
                 <p>Rating: {currVariant.totalRating}</p>
                 <div className="flex flex-wrap justify-between gap-2">
                   <div className="flex w-full gap-2">
-                    <div className="w-1/2 gap-1">
-                      {currVariant.stock ? (
-                        <Button
-                          size="full"
-                          version="contain"
-                          className="gap-1"
-                        >
-                          <ShoppingCart /> Add to cart
-                        </Button>
-                      ) : (
-                        <span className="flex items-center justify-center w-full h-full rounded-full bg-error text-white">
-                          Out of Stock
-                        </span>
-                      )}
+                    <div className="w-1/2 flex">
+                      <AddToCard
+                        id={currVariant.id}
+                        stock={currVariant.stock}
+                      />
                     </div>
-
-                    <Button
-                      version="outline"
-                      className="w-1/2 gap-1"
-                    >
-                      <Heart /> Favorite
-                    </Button>
+                    <ToggleFavorite
+                      version="contain"
+                      text="Favorite"
+                      className="w-1/2"
+                      id={currVariant.id}
+                    />
                   </div>
                   <Button
                     size="full"
                     version="outline"
                     className="gap-1"
+                    aria-label="Buy now"
                   >
                     <WalletCards /> Buy
                   </Button>
