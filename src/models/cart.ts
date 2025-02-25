@@ -24,7 +24,7 @@ export interface ICartItem {
   quantity?: number;
 }
 
-interface IProductVariant extends ProductVariant {
+export interface IProductVariant extends ProductVariant {
   product: Product;
   color: Color | null;
   memory: Memory | null;
@@ -33,7 +33,7 @@ interface IProductVariant extends ProductVariant {
 }
 
 //flat
-export interface IFlatCartProduct {
+export interface IFlatProduct {
   id: number;
   productId: number;
   productVariantId: number;
@@ -57,7 +57,23 @@ export interface ICartResponse extends ICartAdditionalInfo {
   cartProducts: ICartProduct[];
 }
 export interface ICartSliceData extends ICartAdditionalInfo {
-  cartProducts: IFlatCartProduct[];
+  cartProducts: IFlatProduct[];
+}
+export interface IFlatProduct {
+  id: number;
+  productId: number;
+  productVariantId: number;
+  name: string;
+  slug: string;
+  stock: number;
+  price: number;
+  oldPrice: number | null;
+  totalRating: number;
+  color: string | null;
+  memory: string | null;
+  ram: string | null;
+  quantity: number;
+  img: string;
 }
 //tmp
 // export interface CriticalData {
