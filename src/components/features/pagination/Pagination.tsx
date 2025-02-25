@@ -61,7 +61,8 @@ export const Pagination = memo(
       lastPage > 1 && (
         <div className="flex gap-2 flex-wrap justify-center items-center">
           <Button
-            icon={true}
+            aria-label="to first page"
+            icon
             version="contain"
             onClick={() => handlePageChange(1)}
             disabled={currentPage === 1}
@@ -69,7 +70,8 @@ export const Pagination = memo(
             <ChevronsLeft />
           </Button>
           <Button
-            icon={true}
+            aria-label="previous page"
+            icon
             version="contain"
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
@@ -78,17 +80,10 @@ export const Pagination = memo(
           </Button>
           {prevPages.map((page) => (
             <Button
+              className="w-[42px]"
+              aria-label={`page ${page}`}
               key={page}
-              version="outline"
-              onClick={() => handlePageChange(page)}
-            >
-              {page}
-            </Button>
-          ))}
-          <Button version="contain">{currentPage}</Button>
-          {nextPages.map((page) => (
-            <Button
-              key={page}
+              icon
               version="outline"
               onClick={() => handlePageChange(page)}
             >
@@ -96,7 +91,27 @@ export const Pagination = memo(
             </Button>
           ))}
           <Button
-            icon={true}
+            icon
+            className="w-[42px]"
+            version="contain"
+          >
+            {currentPage}
+          </Button>
+          {nextPages.map((page) => (
+            <Button
+              className="w-[42px]"
+              aria-label={`page ${page}`}
+              key={page}
+              icon
+              version="outline"
+              onClick={() => handlePageChange(page)}
+            >
+              {page}
+            </Button>
+          ))}
+          <Button
+            aria-label="next page"
+            icon
             version="contain"
             disabled={currentPage === lastPage}
             onClick={() => handlePageChange(currentPage + 1)}
@@ -104,7 +119,8 @@ export const Pagination = memo(
             <ChevronRight />
           </Button>
           <Button
-            icon={true}
+            aria-label="to last page"
+            icon
             version="contain"
             disabled={currentPage === lastPage}
             onClick={() => handlePageChange(lastPage)}
