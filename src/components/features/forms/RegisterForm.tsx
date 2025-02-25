@@ -1,6 +1,6 @@
 'use client';
 import toast from 'react-hot-toast';
-import { AtSign, KeyRound, User } from 'lucide-react';
+import { AtSign, Github, KeyRound, Plus, User } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { FieldInput, Form } from '@/components/entities';
@@ -9,12 +9,14 @@ import {
   emailValidation,
   Min5,
   ReqMin5Max20Validation,
+  ROUTES,
 } from '@/utils/consts';
 import type { IRegistrationForm } from '@/models/forms';
 // import { handleCredentialsSignup } from '@/app/(root)/signup/signupAction';
 import { Button } from '@/components/shared';
 import { credentialsSignup } from '@/utils/api';
 import { ApiResponse } from '@/models/auth';
+import Link from 'next/link';
 
 export const RegisterForm = () => {
   const form = useForm<IRegistrationForm>({
@@ -108,24 +110,45 @@ export const RegisterForm = () => {
         </div>
       }
       {
-        <div className="w-full flex flex-col justify-center gap-2">
-          <Button
-            version="contain"
-            size="full"
-            type="submit"
-          >
-            Submit
-          </Button>
-          <div className="w-full flex gap-2">
+        <>
+          <div className="pt-2 pb-4 border-b border-border">
+            <div className="flex justify-between typo-body-16 p-2">
+              <p>Already have an account?</p>
+              <Link
+                className="flex gap-1 items-center justify-center text-primary hover:underline focus:underline"
+                href={ROUTES.LOGIN}
+              >
+                Sign in
+              </Link>
+            </div>
             <Button
+              aria-label="sign up"
+              type="submit"
+              version="outline"
+              size="full"
+            >
+              Sign up
+            </Button>
+          </div>
+          <div className="flex gap-2 pt-5">
+            <Button
+              aria-label="github sign up"
+              version="outline"
+              size="full"
+              // onClick={googleHandler}
+            >
+              Github <Github />
+            </Button>
+            <Button
+              aria-label="google sign up"
               version="outline"
               size="full"
               onClick={googleHandler}
             >
-              Google
+              Google <Plus />
             </Button>
           </div>
-        </div>
+        </>
       }
     </Form>
   );
