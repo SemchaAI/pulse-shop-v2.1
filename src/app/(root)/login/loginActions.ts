@@ -5,6 +5,7 @@ import { generateTokens } from '@/utils';
 // import { IUserSession } from '@/models/auth';
 import { cookies } from 'next/headers';
 import { userSessionAdapter } from '@/utils/helpers';
+import { getFavoriteIds } from '@/utils/helpers/getFavoriteIds';
 
 export async function handleCredentialsLogin(body: ILoginForm) {
   const { emailOrName, password } = body;
@@ -21,14 +22,23 @@ export async function handleCredentialsLogin(body: ILoginForm) {
   if (!userByEmailOrName) {
     return { error: 'User with this email/name doesn`t exist' };
   }
-
+  const cartTotal = await prisma.cartProduct.count({
+    where: {
+      cart: { userId: userByEmailOrName.id },
+    },
+  });
   // const userSession: IUserSession = {
   //   id: userByEmailOrName.id,
   //   name: userByEmailOrName.name,
   //   role: userByEmailOrName.role,
   //   email: userByEmailOrName.email,
   // };
-  const userSession = userSessionAdapter(userByEmailOrName);
+  const favoriteProducts = await getFavoriteIds(userByEmailOrName.id);
+  const userSession = userSessionAdapter({
+    ...userByEmailOrName,
+    cartTotal,
+    favoriteProducts,
+  });
 
   const { refreshToken, accessToken } = await generateTokens(userSession);
 
