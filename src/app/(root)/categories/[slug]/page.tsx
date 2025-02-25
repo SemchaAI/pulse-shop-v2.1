@@ -1,4 +1,3 @@
-'use client';
 import { Container } from '@/components/shared';
 import { Filters } from '@/components/widgets';
 import { Products } from './getProducts';
