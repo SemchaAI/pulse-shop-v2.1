@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/shared';
 
 export const ProductCardSkeleton = () => {
   return (
-    <div className="h-full flex flex-col p-4 justify-between relative bg-foreground border border-border rounded-lg overflow-hidden">
+    <li className="h-full flex flex-col p-4 justify-between relative bg-foreground border border-border rounded-lg overflow-hidden">
       <div>
         <Skeleton
           width="100%"
@@ -63,6 +63,6 @@ export const ProductCardSkeleton = () => {
           borderRadius="999px"
         />
       </div>
-    </div>
+    </li>
   );
 };
