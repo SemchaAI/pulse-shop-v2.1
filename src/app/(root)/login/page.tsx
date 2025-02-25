@@ -1,14 +1,13 @@
 import { LoginForm } from '@/components/features';
-import { Container } from '@/components/shared';
-
+import { Container, EntityBlock } from '@/components/shared';
 export default function Login() {
   return (
-    <section>
+    <section className="flex flex-col justify-center grow">
       <Container>
-        <h2>Login</h2>
-        <div>
+        <EntityBlock className="m-auto max-w-[600px]">
+          <h1 className="typo-title-30 text-center">Sign in</h1>
           <LoginForm />
-        </div>
+        </EntityBlock>
       </Container>
     </section>
   );
