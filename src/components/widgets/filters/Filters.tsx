@@ -12,6 +12,8 @@ import {
 import { Button } from '@/components/shared';
 import { FilterWrapper } from '@/components/entities';
 import { CheckboxGroupFilter, PriceFilter } from '@/components/features';
+import { filtersConfig } from '@/utils/consts';
+const { min, max, step } = filtersConfig();
 
 export const Filters = () => {
   console.log('Filters');
@@ -29,6 +31,7 @@ export const Filters = () => {
         <p className="typo-title-24">Filters</p>
         <div className="md:hidden">
           <Button
+            aria-label="filter"
             icon
             version="contain"
             onClick={() => setMobile(true)}
@@ -45,6 +48,7 @@ export const Filters = () => {
         <div className="flex justify-between items-center border-b pb-2 mb-4 md:hidden">
           <p className="text-2xl font-bold">Filters</p>
           <Button
+            name="close"
             icon
             version="contain"
             onClick={() => setMobile(false)}
@@ -58,10 +62,10 @@ export const Filters = () => {
           isLoading={isLoading}
         >
           <PriceFilter
-            min={0}
-            max={100000}
+            min={min}
+            max={max}
             paramKeys={{ paramFrom: 'priceFrom', paramTo: 'priceTo' }}
-            step={1000}
+            step={step}
           />
         </FilterWrapper>
         <FilterWrapper
