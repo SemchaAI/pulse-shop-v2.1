@@ -2,6 +2,7 @@ import { prisma } from '@/prisma/prismaClient';
 import { NextResponse } from 'next/server';
 
 import { getServerSession, userSessionAdapter } from '@/utils/helpers';
+import { getFavoriteIds } from '@/utils/helpers/getFavoriteIds';
 
 export async function GET() {
   try {
@@ -15,32 +16,21 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: userData.id },
-      include: {
-        cart: {
-          select: {
-            _count: {
-              select: {
-                cartProducts: true,
-              },
-            },
-          },
-        },
-        favorite: {
-          select: {
-            _count: {
-              select: {
-                favoriteProducts: true,
-              },
-            },
-          },
-        },
-      },
     });
-
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
-    const filteredUser = userSessionAdapter(user);
+    const cartTotal = await prisma.cartProduct.count({
+      where: {
+        cart: { userId: user.id },
+      },
+    });
+    const favoriteProducts = await getFavoriteIds(user.id);
+    const filteredUser = userSessionAdapter({
+      ...user,
+      cartTotal,
+      favoriteProducts,
+    });
     return NextResponse.json({ user: filteredUser, message }, { status: 200 });
   } catch (error) {
     console.log(`[GET USER] server error ${error}`);
