@@ -8,7 +8,11 @@ export const ROUTES = {
   CART: '/cart',
   FAVORITES: '/favorites',
   PROFILE: '/profile',
-  CATEGORIES: '/categories',
+  TABLETS: '/categories/tablets',
+  LAPTOPS: '/categories/laptops',
+  SMARTPHONES: '/categories/smartphones',
+  ACCESSORIES: '/categories/accessories',
+  ALL: '/categories/all',
 };
 export const API_ROUTES = {
   FILTERS: '/api/filters',
@@ -20,4 +24,5 @@ export const API_ROUTES = {
   GOOGLE: '/api/auth/google',
   GOOGLE_CALLBACK: `${NEXT_PUBLIC_SERVER_URL}/auth/google/callback`,
   CART: '/api/cart',
+  FAVORITE: '/api/favorite',
 };
