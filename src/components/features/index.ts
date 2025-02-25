@@ -12,4 +12,15 @@ export { CheckboxGroupFilter } from './filters/CheckboxGroupFilter';
 export { PriceFilter } from './filters/PriceFilter';
 
 export { ProductSwitcher } from './productSwitcher/ProductSwitcher';
-export { ProductCartControls } from './productControls/ProductCartControls';
+export { AddToCard } from './productControls/AddToCard';
+export { ToggleFavorite } from './productControls/ToggleFavorite';
+
+export { CartQuantityControl } from './cartControls/CartQuantityControl';
+export { CartRemoveControl } from './cartControls/CartRemoveControl';
+
+export { LazyLoadWrapper } from './lazyLoadWrapper/LazyLoadWrapper';
+
+export { HeaderControls } from './header/HeaderControls';
+export { MobileNavbar } from './header/MobileNavbar';
+export { Navbar } from './header/Navbar';
+export { BurgerMenu } from './header/BurgerMenu';
