@@ -1,32 +1,21 @@
+'use client';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { sessionSlice } from './user';
+import { favoriteSlice } from './favorite';
 import { cartSlice } from './cart';
-import { CriticalData } from '@/models/cart';
 
 const rootReducer = combineReducers({
-  [sessionSlice.name]: sessionSlice.reducer,
+  [favoriteSlice.name]: favoriteSlice.reducer,
   [cartSlice.name]: cartSlice.reducer,
 });
 
-export function makeStore(preloadedState?: CriticalData) {
-  console.log('preloadedState', preloadedState);
+export function makeStore() {
   const store = configureStore({
     devTools: true,
     reducer: rootReducer,
-    preloadedState: preloadedState
-      ? {
-          cart: {
-            cartProducts: [],
-            totalAmount: 0,
-            cartTotal: preloadedState.cartTotal,
-            loading: false,
-            error: null,
-          },
-        }
-      : undefined,
   });
   return store;
 }
+export const store = makeStore();
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof rootReducer>;
