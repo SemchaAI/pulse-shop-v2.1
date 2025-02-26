@@ -6,8 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/utils/hooks';
 import { initCart, removeCartItemById } from '@/redux/cart';
 import { removeCartItem } from '@/utils/api/http/cartApi';
 import { queryKeys } from '@/utils/consts';
-import { Button } from '@/components/shared';
-import { X } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import type { IFlatProduct } from '@/models/cart';
 import { queryClient } from '@/utils';
 
@@ -46,14 +45,13 @@ export const CartRemoveControl = ({ item }: IProps) => {
     },
   });
   return (
-    <Button
+    <button
       aria-label="remove item"
-      version="outline"
-      icon={true}
       onClick={() => mutate(item.id)}
       disabled={isPending}
+      className="transition-colors p-0.5 rounded-full hover:bg-primary hover:text-black-01 focus:bg-primary focus:text-black-01"
     >
-      <X size={24} />
-    </Button>
+      <Trash2 size={24} />
+    </button>
   );
 };
