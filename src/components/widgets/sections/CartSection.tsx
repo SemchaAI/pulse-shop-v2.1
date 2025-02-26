@@ -59,9 +59,9 @@ export const CartSection = () => {
     <section className="my-5">
       <Container>
         <h1 className="typo-title-30">Cart</h1>
-        <div className="mt-5 flex gap-5">
+        <div className="mt-5 flex flex-col-reverse lg:flex-row gap-5">
           <EntityBlock className="flex-grow">
-            <ul className="h-[740px] flex flex-col items-center gap-2 flex-grow p-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
+            <ul className="h-[370px] lg:h-[740px] flex flex-col items-center gap-2 flex-grow p-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
               {cart &&
                 cart.cartProducts.map((product, index) => (
                   <CartProduct
@@ -72,7 +72,7 @@ export const CartSection = () => {
                 ))}
             </ul>
           </EntityBlock>
-          <EntityBlock className="w-96 h-fit sticky top-5">
+          <EntityBlock className="w-full lg:w-96 h-fit lg:sticky top-5">
             <div className="w-full flex justify-between pb-2 border-b border-border">
               <p>In cart:</p>
               <p>
