@@ -15,24 +15,27 @@ export const CartProduct = memo(({ item, index }: IProps) => {
   console.log('CartProduct');
   return (
     <li
-      className={`w-full h-60 p-5 flex gap-2 justify-between items-center relative border border-border rounded-lg bg-background
+      className={`w-full p-2 md:p-5 flex gap-2 justify-between items-center relative border border-border rounded-lg bg-background
       ${false ? 'pointer-events-none opacity-50' : ''}`}
     >
-      <div className="flex gap-2">
-        <Link href={`/product/${item.slug}`}>
+      <div className="flex flex-col sm:flex-row gap-2 grow">
+        <Link
+          className="m-auto"
+          href={`/product/${item.slug}`}
+        >
           <Image
-            className="aspect-square object-cover transition-transform hover:scale-105 focus:scale-105"
+            className="lg:w-[150px] lg:h-[150px] xl:w-[200px] xl:h-[200px] aspect-square object-cover transition-transform hover:scale-105 focus:scale-105"
             priority={index > 1 ? false : true}
-            width={200}
-            height={200}
-            sizes="(max-width: 600px) 150px,(max-width: 375px) 100px,200px"
+            width={100}
+            height={100}
+            sizes="(max-width: 768px) 150px,(max-width: 375px) 100px,200px"
             src={NEXT_PUBLIC_IMAGES_HOST + item.img}
             alt={item.name}
           />
         </Link>
-        <div className="flex flex-col justify-center gap-4">
-          <div>
-            <h3>{item.name}</h3>
+        <div className="flex grow flex-col xl:flex-row justify-center sm: xl:items-center gap-4">
+          <div className="flex flex-col">
+            <h3 className="text-pretty">{item.name}</h3>
             <div className="flex gap-2">
               <span>In stock:</span>
               {item.stock}
@@ -55,18 +58,12 @@ export const CartProduct = memo(({ item, index }: IProps) => {
               </div>
             </div>
           </div>
-          <CartQuantityControl item={item} />
+          <div className="flex justify-center sm:justify-start">
+            <CartQuantityControl item={item} />
+          </div>
         </div>
       </div>
-      <div>
-        {/* <Button
-          version="outline"
-          icon={true}
-          onClick={() => mutate(item.id)}
-        >
-          <X size={24} />
-        </Button> */}
-
+      <div className="absolute top-2 left-2 sm:static sm:top-0 sm:left-0">
         <CartRemoveControl item={item} />
       </div>
     </li>
