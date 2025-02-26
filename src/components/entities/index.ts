@@ -8,3 +8,4 @@ export { ProductCardSkeleton } from './products/ProductCardSkeleton';
 export { FilterWrapper } from './filterWrapper/FilterWrapper';
 export { RangeSlider } from './rangeSlider/RangeSlider';
 export { CartProduct } from './cart/CartProduct';
+export { SearchProduct } from './search/SearchProduct';
