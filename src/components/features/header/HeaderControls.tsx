@@ -1,13 +1,14 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Search, ShoppingCart, User } from 'lucide-react';
+import { Heart, ShoppingCart, User } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/features';
 import { CountBadge } from '@/components/shared';
 
 import { useAppDispatch, useAppSelector, useSession } from '@/utils/hooks';
 import { useEffect, useRef } from 'react';
 import { initUserData } from '@/redux/global';
+import { Search } from '@/components/widgets';
 
 export const HeaderControls = () => {
   console.log('HeaderControls');
@@ -25,13 +26,7 @@ export const HeaderControls = () => {
 
   return (
     <div className="flex grow justify-end items-center gap-4 p-3 lg:w-min lg:grow-0 lg:justify-end lg:p-0 lg:border-0">
-      <button
-        aria-label="search products"
-        type="button"
-        className="w-6 flex"
-      >
-        <Search size={24} />
-      </button>
+      <Search />
       <Link
         className="w-6 relative"
         href="/cart"
