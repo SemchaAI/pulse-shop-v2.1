@@ -6,13 +6,12 @@ import { useMutation } from '@tanstack/react-query';
 
 import { search } from '@/app/(root)/categories/[slug]/api';
 import { Button, Container, Input, Overlay } from '@/components/shared';
-import { NEXT_PUBLIC_IMAGES_HOST, queryKeys } from '@/utils/consts';
+import { SearchProduct } from '@/components/entities';
+import { queryKeys } from '@/utils/consts';
 import { useScrollControl } from '@/utils/hooks';
 import useDebounce from '@/utils/hooks/useDebounce';
 
 import type { ISearchProductVariant } from '@/models/prisma';
-import Image from 'next/image';
-import { SearchProduct } from '@/components/entities';
 
 export const Search = () => {
   const [focused, setFocused] = useState(false);
