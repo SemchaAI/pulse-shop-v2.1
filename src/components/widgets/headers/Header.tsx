@@ -40,7 +40,7 @@ export const Header = () => {
               href="/"
             >
               <Activity size={45} />
-              <div>
+              <div className="hidden sm:block">
                 <h1>Pulse shop</h1>
                 <p>
                   <span>Fastest</span> <span>delivery</span>
