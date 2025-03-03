@@ -19,3 +19,4 @@ export { toastOptions } from './toastConfig';
 export { ROUTES, API_ROUTES } from './routes';
 export { filtersConfig } from './filtersConfig';
 export { HeaderNav } from './nav';
+export { fields } from './checkout';
