@@ -9,3 +9,4 @@ export { SaleBadge } from './badges/SaleBadge';
 export { CountBadge } from './badges/CountBadge';
 export { EntityBlock } from './blocks/EntityBlock';
 export { Overlay } from './overlay/Overlay';
+export { InfoLine } from './lines/InfoLine';
