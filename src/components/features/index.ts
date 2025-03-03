@@ -6,6 +6,7 @@ export {
 } from './carouselControls/ArrowButtons';
 export { RegisterForm } from './forms/RegisterForm';
 export { LoginForm } from './forms/LoginForm';
+export { PersonalDataForm } from './forms/PersonalDataForm';
 
 export { Pagination } from './pagination/Pagination';
 export { CheckboxGroupFilter } from './filters/CheckboxGroupFilter';
@@ -24,3 +25,5 @@ export { HeaderControls } from './header/HeaderControls';
 export { MobileNavbar } from './header/MobileNavbar';
 export { Navbar } from './header/Navbar';
 export { BurgerMenu } from './header/BurgerMenu';
+
+export { ProfileShortInfo } from './profileNav/ProfileShortInfo';
