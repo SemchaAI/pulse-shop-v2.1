@@ -6,3 +6,4 @@ export { cartHelper } from './cartHelper';
 export { favoriteHelper } from './favoriteHelper';
 export { updateCartTotalAmount } from './updateCartTotal';
 export { getCartDetails } from './getCartDetails';
+export { applyMask } from './masks';
