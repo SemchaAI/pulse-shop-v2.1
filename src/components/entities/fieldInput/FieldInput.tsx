@@ -1,11 +1,12 @@
 'use client';
 import { Input } from '@/components/shared';
 import { ValidationTypes } from '@/utils/consts';
+import { applyMask } from '@/utils/helpers';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-interface IProps {
+interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   Icon: React.FC<React.SVGProps<SVGSVGElement>>;
   EyeIcon?: boolean;
@@ -14,6 +15,7 @@ interface IProps {
   initType: string;
   placeholder: string;
   name: string;
+  mask?: string;
 }
 
 export const FieldInput = ({
@@ -22,10 +24,11 @@ export const FieldInput = ({
   EyeIcon,
   initType = 'text',
   validation,
+  mask,
   ...rest
 }: IProps) => {
   const {
-    register,
+    control,
     formState: { errors },
     setValue,
   } = useFormContext();
@@ -33,6 +36,13 @@ export const FieldInput = ({
   const error = errors[id]?.message as string;
   const [type, setType] = useState(initType);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+    if (mask) {
+      const formattedValue = applyMask(rawValue, mask);
+      setValue(id, formattedValue);
+    } else setValue(id, rawValue);
+  };
   const onClickClear = () => {
     setValue(id, '');
   };
@@ -41,12 +51,20 @@ export const FieldInput = ({
     <div className="flex flex-col gap-px">
       <div className="flex relative">
         {Icon && <Icon className="absolute flex translate-y-1/2 left-3" />}
-        <Input
-          className="pt-2.5 pb-2.5 pr-5 pl-10"
-          id={id}
-          type={type}
-          {...rest}
-          {...register(id, validation || {})}
+        <Controller
+          control={control}
+          name={id}
+          render={({ field }) => (
+            <Input
+              {...field}
+              className="pt-2.5 pb-2.5 pr-5 pl-10"
+              type={initType}
+              {...rest}
+              onBlur={field.onBlur}
+              onChange={mask ? handleChange : field.onChange}
+            />
+          )}
+          rules={validation || {}}
         />
         {EyeIcon && (
           <button
