@@ -18,7 +18,7 @@ export const Form = <T extends FieldValues>({
   return (
     <FormProvider {...form}>
       <form
-        className="min-w-80 w-full"
+        className="min-w-80 max-w-lg my-12 mx-auto w-full"
         //rounded-lg bg-foreground border border-border  p-3
         onSubmit={form.handleSubmit(onSubmit)}
       >
