@@ -8,15 +8,18 @@ export const ROUTES = {
   CART: '/cart',
   FAVORITES: '/favorites',
   PROFILE: '/profile',
+  PROFILE_PERSONAL: '/profile/personal',
   TABLETS: '/categories/tablets',
   LAPTOPS: '/categories/laptops',
   SMARTPHONES: '/categories/smartphones',
   ACCESSORIES: '/categories/accessories',
+  CHECKOUT: '/checkout',
   ALL: '/categories/all',
 };
 export const API_ROUTES = {
   FILTERS: '/api/filters',
   REFRESH: '/api/auth/refresh',
+  USER: '/api/user',
   ACTIVATION: '/api/auth/activation',
   SESSION: '/api/auth/session',
   CREDENTIALS: '/api/auth/credentials',
