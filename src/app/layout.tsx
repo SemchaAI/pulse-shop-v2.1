@@ -33,7 +33,7 @@ export default function RootLayout({ children }: Readonly<PageProps>) {
       >
         <Providers>
           <Header />
-          <main className="flex-1 flex flex-col">
+          <main className="flex flex-col grow">
             {/* <Suspense fallback={<div>Loading...</div>}> */}
             {children}
             {/* </Suspense> */}
