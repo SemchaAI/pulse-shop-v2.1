@@ -12,6 +12,17 @@ import {
 import { getProduct } from './getProductAction';
 
 import { NEXT_PUBLIC_IMAGES_HOST } from '@/utils/consts';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: IProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { currVariant, product } = await getProduct(slug);
+  return {
+    title: `Pulse shop | ${currVariant.name}`,
+    description: product.description || 'Pulse shop product page',
+  };
+}
+
 interface IProps {
   params: Promise<{
     slug: string;
