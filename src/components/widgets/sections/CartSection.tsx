@@ -2,13 +2,14 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Box, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { useAppDispatch } from '@/utils/hooks';
 
-import { CartProduct } from '@/components/entities';
-import { Container, EntityBlock, StateContainer } from '@/components/shared';
+import { CartList, CheckoutPayment } from '@/components/entities';
+import { Container, StateContainer } from '@/components/shared';
 import { initCart } from '@/redux/cart';
 import { getCart } from '@/utils/api/http/cartApi';
-import { queryKeys } from '@/utils/consts';
+import { queryKeys, ROUTES } from '@/utils/consts';
 import type { ICartSliceData } from '@/models/cart';
 
 export const CartSection = () => {
@@ -24,7 +25,6 @@ export const CartSection = () => {
     queryKey: [queryKeys.cart],
     queryFn: getCart,
     // initialData: cartSelector,
-    retry: 1, // custom fetch will check for 401 error other errors only once
   });
 
   useEffect(() => {
@@ -60,30 +60,22 @@ export const CartSection = () => {
       <Container>
         <h1 className="typo-title-30">Cart</h1>
         <div className="mt-5 flex flex-col-reverse lg:flex-row gap-5">
-          <EntityBlock className="flex-grow">
-            <ul className="h-[370px] lg:h-[740px] flex flex-col items-center gap-2 flex-grow p-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
-              {cart &&
-                cart.cartProducts.map((product, index) => (
-                  <CartProduct
-                    key={product.id}
-                    index={index}
-                    item={product}
-                  />
-                ))}
-            </ul>
-          </EntityBlock>
-          <EntityBlock className="w-full lg:w-96 h-fit lg:sticky top-5">
-            <div className="w-full flex justify-between pb-2 border-b border-border">
-              <p>In cart:</p>
-              <p>
-                {cart.cartTotal} item{cart.cartTotal > 1 ? 's' : ''}.
-              </p>
-            </div>
-            <div className="w-full flex justify-between">
-              <p>Total price:</p>
-              <p>{cart.totalAmount} MDL</p>
-            </div>
-          </EntityBlock>
+          <CartList
+            className="h-[370px] lg:h-[742px]"
+            cart={cart}
+          />
+          <CheckoutPayment cart={cart}>
+            <Link
+              className="w-full px-4 py-2 mt-4 flex items-center justify-center rounded-3xl 
+              transition-colors text-black-01 bg-primary 
+              border border-solid border-transparent 
+              hover:bg-transparent hover:border-secondary hover:text-secondary 
+              focus:bg-transparent focus:border-secondary focus:text-secondary"
+              href={ROUTES.CHECKOUT}
+            >
+              Checkout
+            </Link>
+          </CheckoutPayment>
         </div>
       </Container>
     </section>
