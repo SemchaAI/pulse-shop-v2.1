@@ -11,6 +11,13 @@ export const Min5 = {
     message: 'Minimum length 5',
   },
 };
+export const Min3 = {
+  ...required,
+  minLength: {
+    value: 3,
+    message: 'Minimum length 3',
+  },
+};
 
 export const emailValidation = {
   ...required,
@@ -26,6 +33,14 @@ export const ReqMin5Max20Validation = {
   maxLength: {
     value: 20,
     message: 'Maximal length 20',
+  },
+};
+export const ReqMin3Max10Validation = {
+  ...required,
+  ...Min3,
+  maxLength: {
+    value: 10,
+    message: 'Length range from 3 to 10 characters',
   },
 };
 export const PhoneValidation = {
@@ -49,6 +64,8 @@ export type ValidationTypes =
   | null
   | typeof required
   | typeof Min5
+  | typeof Min3
   | typeof emailValidation
   | typeof ReqMin5Max20Validation
+  | typeof ReqMin3Max10Validation
   | validate;
